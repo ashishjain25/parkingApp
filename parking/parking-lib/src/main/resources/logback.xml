@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Logback config file for Supplier Catalog -->
+<configuration debug="true" scan="true" scanPeriod="15 seconds">
+	<!-- Logback delegates the task of writing a logging event to components 
+		called appenders. A FileAppender writes the logs into a file and RollingFileAppender 
+		extends FileAppender with the capability to rollover log files. For example, 
+		RollingFileAppender can log to a file named log.txt file and, once a certain 
+		condition is met, change its logging target to another file. -->
+	<appender name="app-appender" 
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<file>logs/parking.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>logs/%d{yyyyMMdd}_parking.log.gz
+			</fileNamePattern>
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd-HH.mm.ss.SSS};${HOSTNAME};%-30C{0};%.-1level;%msg;%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.springframework" level="info" />
+
+	<!-- Setting the root logger and the level -->
+	<root level="info">
+		<appender-ref ref="app-appender" />
+	</root>
+</configuration>
